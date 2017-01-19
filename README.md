@@ -1,4 +1,4 @@
-# SDS385
+# SDS 383D
 
 Welcome to SDS 383D, a Ph.D.-level course on statistical modeling.  All course materials can be found through this GitHub page.  
 
@@ -32,7 +32,7 @@ This is a blend between a traditional lecture-based course and a [Moore-method](
 
 ## Grading
 
-Your grade consists of two pieces: 50% peer evaluation, 30% final project, and 20% final exam.
+Your grade consists of three pieces: 50% peer evaluation, 30% final project, and 20% final exam.
 
 ### Peer evaluation
 
