@@ -1,3 +1,7 @@
+# Important notice
+
+Starting on Wednesday 1/25, we will meet in GDC 7.514 -- NOT in Parlin 301.  
+
 # SDS 383D
 
 Welcome to SDS 383D, a Ph.D.-level course on statistical modeling.  All course materials can be found through this GitHub page.  
@@ -5,7 +9,7 @@ Welcome to SDS 383D, a Ph.D.-level course on statistical modeling.  All course m
 Some course logistics   
 - Instructor: James Scott, <http://jgscott.github.com>  
 - Meets: Mondays and Wednesday, 3:00 - 4:30
-- Classroom: Parlin 301
+- Classroom: GDC 7.514
 
 ## Exercises 
 
