@@ -7,6 +7,7 @@ Here are links to the GitHub pages of folks in the course.  This will facilitate
 - [Jesse Miller](https://github.com/jmstatsut/SDS383D)
 - [An Thanh Nguyen](https://github.com/thanhan/SM2)  
 - [Ciara Nugent](https://github.com/ciaranugent/StatModelingII)  
+- [Diego Olano](https://github.com/diegoolano/ut-SDS383D-statsII)  
 - [Giorgio Paulon](https://github.com/gpaulon/SDS383D)  
 - [Abhishek Sinha](https://github.com/abhishekcs/StatisticalModelling/)  
 - [Jennifer Starling](https://github.com/jestarling/statsmod)  
@@ -29,10 +30,9 @@ Here are some ways you might consider helping out:
 8) etc.  This isn't an exhaustive list.  
 
 
-
 There is no expectation that you spend hours on a peer review, or do anything close to all of these things in any one peer review.  Focus your efforts where you expect they will do the most good.  In the neighborhood of 1-2 hours is an appropriate amount of time -- maybe more or less, depending on interest and circumstance.  For example, if you're learning a lot from someone's code, you might find it a wise investment to spend more time with it.  In addition to helping out your buddy, you should be learning from this experience, as well.  A lot of great writers learned to write by reading and editing the work of others.  The same is true of coding.  
 
 
 ### Peer review 1: Due Monday Feb 20  
 
-The pairings are:  Rohit/Chenfeng, Jesse/An Thanh, Ciara/Giorgio, Abhishek/Jennifer, Spencer/Yinan.  Please e-mail your peer reviews to your reviewee, CCing me, by Monday, February 20.  You can post your peer review on your GitHub site and send a link, or just send a PDF.  
+The pairings are:  Rohit/Chenfeng, Jesse/An Thanh, Ciara/Giorgio, Abhishek/Jennifer, Spencer -> Yinan -> Diego -> Spencer (where -> indicates "reviews").  Please e-mail your peer reviews to your reviewee, CCing me, by Monday, February 20.  You can post your peer review on your GitHub site and send a link, or just send a PDF.  
