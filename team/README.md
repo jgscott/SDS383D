@@ -9,9 +9,9 @@ Here are links to the GitHub pages of folks in the course.  This will facilitate
 - [Ciara Nugent](https://github.com/ciaranugent/StatModelingII)  
 - [Diego Olano](https://github.com/diegoolano/ut-SDS383D-statsII)  
 - [Giorgio Paulon](https://github.com/gpaulon/SDS383D)  
-- [Abhishek Sinha](https://github.com/abhishekcs/StatisticalModelling/)  
 - [Jennifer Starling](https://github.com/jestarling/statsmod)  
 - [Spencer Woody](https://github.com/spencerwoody/SDS383D)  
+- [Zhenpei Yang](https://github.com/yzp12/statsmodel)  
 - [Yinan Zhu](https://github.com/yinanzhu12/SDS383D-course-work)  
 
 ### Goals of peer review
@@ -35,4 +35,4 @@ There is no expectation that you spend hours on a peer review, or do anything cl
 
 ### Peer review 1: Due Monday Feb 20  
 
-The pairings are:  Rohit/Chenfeng, Jesse/An Thanh, Ciara/Giorgio, Abhishek/Jennifer, Spencer -> Yinan -> Diego -> Spencer (where -> indicates "reviews").  Please e-mail your peer reviews to your reviewee, CCing me, by Monday, February 20.  You can post your peer review on your GitHub site and send a link, or just send a PDF.  
+The pairings are:  Rohit/Chenfeng, Jesse/An Thanh, Ciara/Giorgio, Zhenpei/Jennifer, Spencer -> Yinan -> Diego -> Spencer (where -> indicates "reviews").  Please e-mail your peer reviews to your reviewee, CCing me, by Monday, February 20.  You can post your peer review on your GitHub site and send a link, or just send a PDF.  
