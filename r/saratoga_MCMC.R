@@ -39,7 +39,7 @@ g = n
 K = (1/g)*crossprod(Xs)
 d_prior = 1
 eta_prior = 1
-h = 4  # for t_h error
+h = 3.5  # for t_h error
 
 # pre-compute what we can
 d_star = d_prior + n
