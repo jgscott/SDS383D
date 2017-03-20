@@ -2,12 +2,10 @@ library(mosaic)
 library(lattice)
 library(lme4)
 
-# Mixed models
+# Mixed models for partial pooling
 
-# Reason 1: partial pooling
-
-mtdna1 = read.csv('mtdna1.csv', header=TRUE)
-mtdna2 = read.csv('mtdna2.csv', header=TRUE)
+mtdna1 = read.csv('../data/mtdna1.csv', header=TRUE)
+mtdna2 = read.csv('../data/mtdna2.csv', header=TRUE)
 summary(mtdna1)
 
 # Recast the numerical codes as factors
@@ -34,7 +32,7 @@ pred1 = predict(lm1, mtdna2)
 y2 = log2(mtdna2$copy)
 plot(pred1, y2)
 
-# The simple group-wise model does
+# The simple group-wise model predicts
 # slightly worse than the grand mean!
 grandmean = mean(log2(mtdna1$copy))
 sum( (y2 - pred1)^2 )
@@ -63,8 +61,15 @@ shrink1 = w*pred1 + (1-w)*grandmean
 plot(pred1, shrink1)
 abline(0,1)
 
-  
-# Reason 2: avoiding pseudoreplication
+#####
+# Fit a hierarchical model to a merged data set
+#####
+
+# Create a merged data set
+mtdna = rbind(mtdna1, mtdna2)
+
+hlm1 = lmer(log2(copy) ~ (1 | tissue), data=mtdna1)
+summary(hlm1)
 
 # We have ignored correlation due to litter
 boxplot(resid(lm1) ~ litter, data=mtdna1)
@@ -84,10 +89,12 @@ ranef(hlm1)
 # Create a merged data set
 mtdna = rbind(mtdna1, mtdna2)
 
-# We can also account for animal-level correlations
-boxplot(log2(copy) ~ animal:litter, data=mtdna)
+# We can also account for litter-level correlations
+# Notice that a similar pattern across tissues holds within
+# each litter, but that litters themselves are quite different
+boxplot(log2(copy) ~ tissue:litter, data=mtdna, las=2)
 
-hlm2 = lmer(log2(copy) ~ (1 | tissue) + (animal | litter), data=mtdna)
+hlm2 = lmer(log2(copy) ~ (1 | tissue) + (1 | litter), data=mtdna)
 summary(hlm2)
 
 r2.tissue = ranef(hlm2, condVar=TRUE, whichel = 'tissue')

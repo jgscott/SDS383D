@@ -2,7 +2,7 @@ library(mosaic)
 library(lme4)	# will also need to have Matrix and lattice installed
 
 
-ut2000 = read.csv("../02regression/ut2000.csv", header=TRUE)
+ut2000 = read.csv("../data/ut2000.csv", header=TRUE)
 ut2000$GPA = ut2000$GPA*100
 
 # Main effects
@@ -18,7 +18,7 @@ summary(hlm1)
 coef(lm1)
 coef(hlm1)
 fixef(hlm1)
-ranef(hlm1)
+ranef(hlm1)	
 
 # Compare the estimated School intercepts under both models
 
@@ -27,15 +27,10 @@ batch1 = coef(lm1)[1] + c(0, coef(lm1)[4:12])
 batch2 = coef(hlm1)$School[,1]
 
 # Plot the estimated School-specific intercepts
+# pretty similar
 plot(batch1, batch2)
 abline(0,1)
 
-# With interaction b/t school and SAT math scores
-lm2 = lm(GPA~SAT.V + SAT.Q + School + SAT.Q:School, data=ut2000)
-anova(lm2)
-summary(lm2)
-
-xyplot(GPA ~ SAT.Q | School, data=ut2000)
 
 
 # Rescale the quantitative variables
@@ -43,6 +38,12 @@ xyplot(GPA ~ SAT.Q | School, data=ut2000)
 # Mixed models work best with standardized variables
 ut2000s = ut2000
 ut2000s[,c(1,2,3,5)] = scale(ut2000s[,c(1,2,3,5)])
+
+# With interaction b/t school and SAT math scores
+lm2 = lm(GPA~SAT.V + SAT.Q + School + SAT.Q:School, data=ut2000s)
+anova(lm2)
+summary(lm2)
+
 
 # Now a mixed-effects model
 # This says allow the intercept and SAT.Q slopes to change among the groups
@@ -71,11 +72,8 @@ batch1 = coef(lm2)[2] + c(0, coef(lm2)[13:21])
 batch2 = coef(hlm2)$School[,3]
 
 # Pulling the coefficients toward a group mean = shrinkage
-plot(batch1, batch2, xlim=c(-0.3,0.2), ylim=c(-0.3,0.2))
+plot(batch1, batch2, xlim=c(-0.45,0.3), ylim=c(-0.45,0.3))
 abline(0,1)
-# Question: why isn't the order of the original coefficients preserved?
 
 dotplot(ranef(hlm2, condVar = TRUE))
-dotplot(ranef(hlm2, condVar = TRUE), scales=list(relation='free'))
-
 

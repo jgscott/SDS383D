@@ -3,7 +3,7 @@ library(mosaic)
 library(lmtest)
 library(lattice)
 
-semicon = read.csv("semicon.csv", header=TRUE)
+semicon = read.csv("../data/semicon.csv", header=TRUE)
 summary(semicon)
 
 # material is categorical
@@ -33,14 +33,13 @@ summary(lm2)
 
 
 # Now a hierarchical model
-hlm1 = lmer(rate ~ split + (1 + split | material), data=semicon)
-print(hlm1)
+hlm1 = lmer(rate ~ (1 + split | material), data=semicon)
+summary(hlm1)
 
 
 coef(hlm1)
 ranef(hlm1)
 dotplot(ranef(hlm1, postVar=TRUE), scales=list(relation='free'))
-
 
 
 
@@ -54,8 +53,7 @@ par(mfrow=c(3,3), mar=c(4,4,3,0.5))
 lmlist=list()
 myxlab = c("Split of Exposure Sequence", rep("",8))
 myylab = c("PhoRes Dev Rate (nm/s)", rep("",8))
-for(i in 1:9)
-{
+for(i in 1:9) {
 	# Which material?
 	mymat = levels(semicon$material)[i]
 	
@@ -94,7 +92,7 @@ for(i in 1:9)
 
 	# add lines for the linear model and the hierarchical linear model
 	abline(lm1b, lty='solid')
-	abline( as.numeric(coef(hlm1)$material[i,]) , lty='dashed', col='darkgrey')
+	abline( rev(as.numeric(coef(hlm1)$material[i,])) , lty='dashed', col='darkgrey')
 	
 	# Add the new linear model to a list in case we want to look at it later
 	lmlist[[i]] = lm1b
