@@ -6,7 +6,7 @@ library(lme4)
 
 mtdna1 = read.csv('../data/mtdna1.csv', header=TRUE)
 mtdna2 = read.csv('../data/mtdna2.csv', header=TRUE)
-summary(mtdna1)
+summary(mtdna2)
 
 # Recast the numerical codes as factors
 mtdna1$animal = factor(mtdna1$animal)
@@ -69,10 +69,11 @@ abline(0,1)
 mtdna = rbind(mtdna1, mtdna2)
 
 hlm1 = lmer(log2(copy) ~ (1 | tissue), data=mtdna1)
+lm0 = lm(log2(copy) ~ tissue - 1, data=mtdna1)
 summary(hlm1)
 
 # We have ignored correlation due to litter
-boxplot(resid(lm1) ~ litter, data=mtdna1)
+boxplot(resid(hlm1) ~ litter, data=mtdna1)
 
 # Soln. 1: fit an ordinary linear model
 # with dummy variables for litter
@@ -99,3 +100,5 @@ summary(hlm2)
 
 r2.tissue = ranef(hlm2, condVar=TRUE, whichel = 'tissue')
 dotplot(r2.tissue)
+
+boxplot(resid(hlm2) ~ tissue:litter, data=mtdna)
