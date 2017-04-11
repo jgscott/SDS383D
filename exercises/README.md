@@ -30,6 +30,8 @@ The following papers/readings provide useful background for this section.  I'll 
 - [The normal-Wishart prior](https://en.wikipedia.org/wiki/Normal-inverse-Wishart_distribution), from Wikipedia (or any similar source).  Kevin Murphy also has [some useful notes](http://www.cs.ubc.ca/~murphyk/Papers/bayesGauss.pdf) that summarize this distribution; see Section 8 in particular.   
 - [Bayesian analysis of binary and polychotomous response data](http://www.stat.cmu.edu/~brian/905-2009/all-papers/albert-chib-1993.pdf), by Albert and Chib.  
 - [Fitting mixed-effects models by REML](http://web.mit.edu/xiuming/www/docs/tutorials/ReML.pdf).  [How it works in the lme4 R package](https://cran.r-project.org/web/packages/lme4/vignettes/Theory.pdf).  
+- [Simon Jackman's paper on spatial voting models](https://academic.oup.com/pan/article-abstract/9/3/227/1453708/Multidimensional-Analysis-of-Roll-Call-Data-via).  You can find an application of this framework in [our paper on family-planning legislation in the Texas Legislature.](https://www.ncbi.nlm.nih.gov/pubmed/26794846)  
+
 
 
 

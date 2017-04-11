@@ -22,6 +22,9 @@ xtabs(~state, data=polls)
 # partially pool across states
 hglm1 = glmer(bush ~ black + female + (1 | state), family=binomial(link="logit"), data=polls)
 
+hist(predict(hglm1))
+
+
 coef(hglm1)
 r = ranef(hglm1, condVar = TRUE)
 d = dotplot(r)
@@ -41,3 +44,5 @@ plot(d$state)
 plot(d$edu)
 
 hglm3 = glmer(bush ~ black + female + edu + (1 | state) + (female | edu) , family=binomial(link="logit"), data=polls)
+
+hist(predict(hglm3, type='response'))
