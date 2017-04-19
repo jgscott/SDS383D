@@ -96,5 +96,17 @@ The recommended (though not officially required) reference book is [Data Analysi
 
 ## Miscellaneous links  
 
-Posted as appropriate.  
+### Bayesian model selection
+
+Some more "modern" classics:  
+- [Testing precise hypotheses](https://projecteuclid.org/euclid.ss/1177013238), by Berger and Delampady (good discussion of p-values)  
+- [Bayes Factors](https://www.stat.washington.edu/raftery/Research/PDF/kass1995.pdf), by Kass and Raftery.  
+- [Objective Bayesian Methods for Model Selection: Introduction and Comparison](https://projecteuclid.org/euclid.lnms/1215540968), by Berger and Pericchi   
+- [The intrinsic Bayes factor for model selection and prediction](https://www.jstor.org/stable/2291387), by Berger and Pericchi (1996).  
+- [Mixtures of g priors for Bayesian variable selection](http://amstat.tandfonline.com/doi/abs/10.1198/016214507000001337), by Liang et al (2008).  
+- [Nested sampling for general Bayesian computation](https://projecteuclid.org/euclid.ba/1340370944), by Skilling (2006).  Probably the best "general" method going for actually calculating marginal likelihoods.  Note: I always found Skilling's explanation very hard to understand.  I personally like the [explanation here](https://arxiv.org/abs/1409.3601) more; see Section 5.1.   
+
+And some actual classics:  
+- [Limiting behavior of posterior distributions when the model is incorrect](https://projecteuclid.org/euclid.aoms/1177699597), by Berk (1966).  
+- [Estimating the dimension of a model](https://projecteuclid.org/euclid.aos/1176344136), by Schwarz (1978).  
 
