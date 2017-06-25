@@ -31,7 +31,7 @@ This course is primarily about hierarchical Bayesian modeling, although there wi
 
 If you have any doubt about your preparation for this course, feel free to chat with me on the first day.  
 
-This is a blend between a traditional lecture-based course and a [Moore-method](https://en.wikipedia.org/wiki/Moore_method) course.  Some of the time is spend on lectures in class.  But a lot of the other class time is spent with you in charge.  You will work on the [exercises outside of class](exercises/).  When you come to class, you will share what you've done, and benefit from understanding what others have done.   We will end up covering less than in a traditional lecture-based course.  But what you learn, you will learn very deeply.  The trade-off is more than worth it.   
+This is a blend between a traditional lecture-based course and a [Moore-method](https://en.wikipedia.org/wiki/Moore_method) course.  Some of the time is spent on lectures in class.  But a lot of the other class time is spent with you in charge.  You will work on the [exercises outside of class](exercises/).  When you come to class, you will share what you've done, and benefit from understanding what others have done.   We will end up covering less than in a traditional lecture-based course.  But what you learn, you will learn very deeply.  The trade-off is more than worth it.   
 
 
 ## Grading
