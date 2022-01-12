@@ -32,7 +32,11 @@ This is a blend between a traditional lecture-based course and a flipped classro
 
 ## Grading
 
-Your grade consists of two pieces: 60% peer evaluation and 40% final project.
+Your grade consists of two pieces: 30% exercises, 30% peer evaluation and 40% final project.
+
+### Exercises
+
+You will turn in a complete copy of all exercises at the end of the semester, in a single PDF document.  
 
 ### Peer evaluation
 
