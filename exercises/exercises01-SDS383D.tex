@@ -171,15 +171,15 @@ To fix notation: $y_i$ is a scalar response; $x_i$ is a $p$-vector of predictors
 Consider three classic inferential principles that are widely used to estimate $\beta$, the vector of regression coefficients.  In this context we will let $\hat{\beta}$ denote an estimate of $\beta$, $y = (y_1, \ldots, y_n)^T$ the vector of outcomes, $X$ the matrix of predictors whose ith row is $x_i^T$, and $\epsilon$ the vector of residuals $(\epsilon_1, \ldots, \epsilon_n)^T$.  
  
 \begin{description}
-\item[Least squares:] make the sum of squared errors as small as possible.
+\item[Least squares:] make the sum of squared errors as small as possible.  We can express this in terms of the squared Euclidean norm of the residual vector $\epsilon = y - X \beta$:  
 $$
-\hat{\beta} = \arg \min_{\beta \in \mathcal{R}^p} \Vert (y - X\beta) \Vert_2^2 = (y - X\beta)^T (y-X \beta)
+\hat{\beta} = \arg \min_{\beta \in \mathcal{R}^p} \Vert y - X\beta \Vert_2^2 =  \arg \min_{\beta \in \mathcal{R}^p} (y - X\beta)^T (y-X \beta)
 $$
 \item[Maximum likelihood under Gaussianity:] assume that the errors are independent, mean-zero normal random variables with common variance $\sigma^2$.  Choose $\hat{\beta}$ to maximize the likelihood:
 $$
 \hat{\beta} = \arg \max_{\beta \in \mathcal{R}^p} \left\{ \prod_{i=1}^n p(y_i \mid \beta, \sigma^2) \right\} \, .
 $$
-Here $p_i(y_i \mid \sigma^2)$ is the conditional probability density function of $y_i$, given the model parameters $\beta$ and $\sigma^2$.  Note that an equivalent way to write this is to say that $y$ is multivariate normal with mean $X \beta$ and covariance matrix $\sigma^2 I$, where $I$ is the $n$-dimensional identity matrix.  
+Here $p_i(y_i \mid \sigma^2)$ is the conditional probability density function of $y_i$, given the model parameters $\beta$ and $\sigma^2$.  Note that an equivalent way to write the likelihood is to say that the response vector $y$ is multivariate normal with mean $X \beta$ and covariance matrix $\sigma^2 I$, where $I$ is the $n$-dimensional identity matrix.  
 
 \item[Method of moments:] Choose $\hat{\beta}$ so that the sample covariance between the errors and each of the $p$ predictors is exactly zero.  (That is, the sample covariance of $\epsilon$ and each column of $X$ is zero.)  This gives you a system of $p$ equations and $p$ unknowns.
 \end{description}
@@ -190,7 +190,7 @@ Here $p_i(y_i \mid \sigma^2)$ is the conditional probability density function of
 
 \item As mentioned above, the estimator in the previous part corresponds to the assumption that $y \sim N(X \beta, \sigma^2 I)$.  What happens if we instead postulate that $y \sim N(X \beta, \Sigma)$, where $\Sigma$ is an arbitrary known covariance matrix, not necessarily proportional to the identity?  What is the maximum likelihood estimate for $\beta$ now, and what is the variance of this estimator?   
 
-\item Show that in the special case where $\Sigma$ is a diagonal matrix, i.e. $\Sigma = \mbox{diag}(\sigma_1^2, \sigma_2^2, \ldots, \sigma_n^2$, that the MLE is the familiar \emph{weighted least squares} estimator.  
+\item Show that in the special case where $\Sigma$ is a diagonal matrix, i.e. $\Sigma = \mbox{diag}(\sigma_1^2, \sigma_2^2, \ldots, \sigma_n^2)$, that the MLE is the familiar \emph{weighted least squares} estimator.  
 
 
 \end{enumerate}
