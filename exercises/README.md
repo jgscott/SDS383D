@@ -4,15 +4,17 @@
 
 ## Exercises 1: Preliminaries
 
-The goal of [Exercises 1](exercises01-SDS383D.pdf) is to provide you with a review of two basic ideas:  
-- Bayesian updating in simple conjugate families  
-- frequentist approaches to uncertainty quantification  
+The goals of [Exercises 1](exercises01-SDS383D.pdf) are: 
+- to provide you with a review of Bayesian updating in simple conjugate families  
+- to treat the multivariate normal distribution in some depth.  Since this distribution is so fundamental to working with hierarchical Bayesian models, it's worth the effort.  
 
-It will also treat the multivariate normal distribution in (possibly excruciating) depth.  But since this distribution is so fundamental to working with hierarchical Bayesian models, it's worth the effort.  
+By January 31, please complete the first two sections, on "Bayesian inference in simple conjugate families" and "The multivariate normal distribution".  By February 2, please complete the section on "Multiple regression: three classical principles for inference."  Be ready to present in class on any of these problems if called upon.  
 
+<!-- 
 ## Exercises 2: Bayes and the Gaussian linear model  
 
 The goal of [Exercises 2](exercises02-SDS383D.pdf) is to get you comfortable with the use of conjugate priors in Gaussian models.  It finishes with a cool use of hierarchical modeling to fit a regression model with heavy-tailed errors.  
+
 
 ## Exercises 3: Linear smoothing and Gaussian processes
 
@@ -32,6 +34,5 @@ The following papers/readings provide useful background for this section.  I'll 
 - [Fitting mixed-effects models by REML](http://web.mit.edu/xiuming/www/docs/tutorials/ReML.pdf).  [How it works in the lme4 R package](https://cran.r-project.org/web/packages/lme4/vignettes/Theory.pdf).  
 - [Simon Jackman's paper on spatial voting models](https://academic.oup.com/pan/article-abstract/9/3/227/1453708/Multidimensional-Analysis-of-Roll-Call-Data-via).  You can find an application of this framework in [our paper on family-planning legislation in the Texas Legislature.](https://www.ncbi.nlm.nih.gov/pubmed/26794846)  
 
-
-
+ -->
 

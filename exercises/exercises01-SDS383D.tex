@@ -13,7 +13,7 @@
 \setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
 \graphicspath{{graphics/}}
 
-\title[Chapter 1 $\cdot$ SDS 383D]{Chapter 1: Preliminaries}
+\title[Lesson 1 $\cdot$ SDS 383D]{Exercises 1: Preliminaries}
 %\author[ ]{ }
 \date{}  % if the \date{} command is left out, the current date will be used
 
@@ -111,7 +111,7 @@ Here's an alternative characterization of the univariate normal distribution in 
 
 \item Another basic theorem is that a random vector is multivariate normal if and only if it is an affine transformation of independent univariate normals.  You will first prove the ``if'' statement.  Let $z$ have a standard multivariate normal distribution, and define the random vector $x = L z + \mu$ for some $p \times p$ matrix $L$ of full column rank.\footnote{The full rank restriction turns out to be unnecessary; relaxing it leads to what is called the \textit{singular normal distribution.}}   Prove that $x$ is multivariate normal.  In addition, use the moment identities you proved above to compute the expected value and covariance matrix of $x$.  
 
-\item Now for the ``only if.''  Suppose that $x$ has a multivariate normal distribution.  Prove that $x$ can be written as an affine transformation of standard normal random variables.  (Note: a good way to prove that something can be done is to do it!)  Use this insight to propose an algorithm for simulating multivariate normal random variables with a specified mean and covariance matrix.
+\item Now for the ``only if.''  Suppose that $x$ has a multivariate normal distribution.  Prove that $x$ can be written as an affine transformation of standard normal random variables.  (Note: a good way to prove that something can be done is to do it!  Think about a matrix $A$ such that $A A^T = \Sigma$.)  Use this insight to propose an algorithm for simulating multivariate normal random variables with a specified mean and covariance matrix.
 
 \item Use this last result, together with the PDF of a standard multivariate normal, to show that the PDF of a multivariate normal $x \sim \N(\mu, \Sigma)$ takes the form $p(x) = C \exp\{-Q(x-\mu)/2\}$ for some constant $C$ and quadratic form $Q(x-\mu)$.\footnote{A useful fact is that the Jacobian matrix of the linear map $x \rightarrow Ax$ is simply $A$.}
 
@@ -168,100 +168,32 @@ Explain briefly how one may interpret this conditional distribution as a linear 
 Suppose we observe data that we believe to follow a linear model, where $y_i = x_i^T \beta + \epsilon_i$ for $i = 1, \ldots, n$.
 To fix notation: $y_i$ is a scalar response; $x_i$ is a $p$-vector of predictors or features; and the $\epsilon_i$ are errors.  By convention we write vectors as column vectors.  Thus $x_i^T \beta$ will be our typical way of writing the inner product between the vectors $x_i$ and $\beta$.\marginnote[-4pc]{Notice we have no explicit intercept.  For now you can imagine that all the variables have had their sample means subtracted, making an intercept superfluous.  Or you can just assume that the leading entry in every $x_i$ is equal to 1, in which case $\beta_1$ will be an intercept term.}
 
-Consider three classic inferential principles that are widely used to estimate $\beta$, the vector of regression coefficients.  In this context we will let $\hat{\beta}$ denote an estimate of $\beta$---think, it wears a hat because it's masquerading as the true value.\footnote{This metaphor once came back to me in somewhat garbled fashion on an undergraduate's midterm: ``$\hat{\beta}$ wears a hat because he is an impostor.''}
+Consider three classic inferential principles that are widely used to estimate $\beta$, the vector of regression coefficients.  In this context we will let $\hat{\beta}$ denote an estimate of $\beta$, $y = (y_1, \ldots, y_n)^T$ the vector of outcomes, $X$ the matrix of predictors whose ith row is $x_i^T$, and $\epsilon$ the vector of residuals $(\epsilon_1, \ldots, \epsilon_n)^T$.  
+ 
 \begin{description}
-\item[Least squares:]make the sum of squared errors as small as possible.
+\item[Least squares:] make the sum of squared errors as small as possible.
 $$
-\hat{\beta} = \arg \min_{\beta \in \mathcal{R}^p} \left\{  \sum_{i=1}^n (y_i - x_i^T \beta)^2 \right\}  \, .
+\hat{\beta} = \arg \min_{\beta \in \mathcal{R}^p} \Vert (y - X\beta) \Vert_2^2 = (y - X\beta)^T (y-X \beta)
 $$
 \item[Maximum likelihood under Gaussianity:] assume that the errors are independent, mean-zero normal random variables with common variance $\sigma^2$.  Choose $\hat{\beta}$ to maximize the likelihood:
 $$
 \hat{\beta} = \arg \max_{\beta \in \mathcal{R}^p} \left\{ \prod_{i=1}^n p(y_i \mid \beta, \sigma^2) \right\} \, .
 $$
-Here $p_i(y_i \mid \sigma^2)$ is the conditional probability density function of $y_i$, given the model parameters $\beta$ and $\sigma^2$.
+Here $p_i(y_i \mid \sigma^2)$ is the conditional probability density function of $y_i$, given the model parameters $\beta$ and $\sigma^2$.  Note that an equivalent way to write this is to say that $y$ is multivariate normal with mean $X \beta$ and covariance matrix $\sigma^2 I$, where $I$ is the $n$-dimensional identity matrix.  
 
-\item[Method of moments:] Choose $\hat{\beta}$ so that the sample covariance between the errors and each of the $p$ predictors is exactly zero.  This gives you a system of $p$ equations and $p$ unknowns.
+\item[Method of moments:] Choose $\hat{\beta}$ so that the sample covariance between the errors and each of the $p$ predictors is exactly zero.  (That is, the sample covariance of $\epsilon$ and each column of $X$ is zero.)  This gives you a system of $p$ equations and $p$ unknowns.
 \end{description}
 
 \begin{enumerate}[(A)]
 
-\item Show that all three of these principles lead to the same estimator.\footnote{You will end up tearing your hair out if you try to deal with sums of scalar quantities.  Thus convert everything to matrix-vector notation.  Remember your basic results on moments of linear combinations of random variables, and the following two identities on derivatives of linear and quadratic forms:
-\begin{eqnarray*}
-\frac{\partial (a^Tx)}{\partial x} &=& a \\
-\frac{\partial (x^T A x)}{\partial x} &=& (A + A^T) x \, .
-\end{eqnarray*}
-}
+\item Show that all three of these principles lead to the same estimator.  What is the variance of this estimator under the assumption that each $\epsilon_i$ is independent and identically distribution with variance $\sigma^2$?  
 
-\item Now suppose you trust some observations more than others, and will estimate $\beta$ by minimizing the weighted sum of squared errors,
-$$
-\hat{\beta} = \arg \min_{\beta \in \mathcal{R}^p} \left\{  \sum_{i=1}^n w_i (y_i - x_i^T \beta)^2 \right\}  \, ,
-$$
-where the $w_i$ are weights.  (Trustworthy observations have large weights.)  Derive this estimator, and show that it corresponds to the maximum-likelihood solution under \textit{heteroscedastic} Gaussian error:
-$$
-\hat{\beta} = \arg \max_{\beta \in \mathcal{R}^p} \left\{ \prod_{i=1}^n p(y_i \mid \beta, \sigma_i^2) \right\} \, .
-$$
-Make sure you explicitly connect the weights $w_i$ and the idiosyncratic variances $\sigma^2_i$.
+\item As mentioned above, the estimator in the previous part corresponds to the assumption that $y \sim N(X \beta, \sigma^2 I)$.  What happens if we instead postulate that $y \sim N(X \beta, \Sigma)$, where $\Sigma$ is an arbitrary known covariance matrix, not necessarily proportional to the identity?  What is the maximum likelihood estimate for $\beta$ now, and what is the variance of this estimator?   
+
+\item Show that in the special case where $\Sigma$ is a diagonal matrix, i.e. $\Sigma = \mbox{diag}(\sigma_1^2, \sigma_2^2, \ldots, \sigma_n^2$, that the MLE is the familiar \emph{weighted least squares} estimator.  
+
 
 \end{enumerate}
-
-\section{Quantifying uncertainty: some basic frequentist ideas}
-
-\subsection{In linear regression}
-
-In frequentist inference, inferential uncertainty is usually characterized by the sampling distribution, which expresses how one's estimate is likely to change under repeated sampling.  The idea is simple: unstable estimators shouldn't be trusted, and should therefore come with large error bars.  This should be a familiar concept, but in case it isn't, consult the tutorial on sampling distributions in this chapter's references.
-
-Suppose, as in the previous section, that we observe data from a linear regression model with Gaussian error:
-$$
-y = X \beta + \epsilon \; , \quad \epsilon \sim \N(0, \sigma^2 I) \, .
-$$
-
-\begin{enumerate}[(A)]
-
-\item Derive the sampling distribution of your estimator for $\beta$ from the previous problem.
-
-\item This sampling distribution depends on $\sigma^2$, yet this is unknown.  Suppose that you still wanted to quantify your uncertainty about the individual regression coefficients.  Propose a strategy for calculating standard errors for each $\beta_j$.  Then consult the data set on ozone concentration in Los Angeles, where the goal is to regress daily ozone concentration on a set of other atmospheric variables.  This is available from the R package ``mlbench,'' with my R script ``ozone.R'' giving you a head start on processing things.
-
-Calculate standard errors using your method, and then using the pre-packaged lm function in R.  Note: you may have an essentially correct strategy for calculating standard errors that yields something slightly different from the lm function.  If so, that's OK---can you explain the discrepancy?
-
-\end{enumerate}
-
-\subsection{Propagating uncertainty}
-
-Suppose you have taken data and estimated some parameters $\theta_1, \ldots, \theta_P$ of a multivariate statistical model---for example, the regression model of the previous problem.  Call your estimate $\thetahat = (\thetahat_1, \ldots, \thetahat_P)^T$.  Suppose that you also have an estimate of the covariance matrix of the sampling distribution of $\thetahat$:
-$$
-\hat{\Sigma} \approx \mbox{cov}( \thetahat) = E \left\{ (\thetahat - \bar\theta) (\thetahat - \bar\theta)^T \right\} \, ,
-$$
-where the expectation is under the sampling distribution for the data, given the true parameter $\theta$.  Here $\bar\theta$ denotes the mean of the sampling distribution.
-
-If you want to report uncertainty about the $\thetahat_j$'s, you can do so by peeling off the diagonal of the estimated covariance matrix: $\hat{\Sigma}_{jj} = \sigmahat^2_j$ is the square of the ordinary standard error of $\thetahat_j$.  But what if you want to report uncertainty about some function involving multiple components of the estimate $\thetahat$?
-
-\begin{enumerate}[(A)]
-\item Start with the trivial case where you want to estimate
-$$
-f(\theta) = \theta_1 + \theta_2 \, .
-$$
-Calculate the standard error of $f(\thetahat)$, and generalize this to the case where $f$ is the sum of all $p$ components of $\thetahat$.
-
-\item What now if $f$ is a nonlinear function of the $\thetahat_j$'s?  Propose an approximation for $\mbox{var} \{ f(\thetahat) \}$, where $f$ is any sufficiently smooth function.  (As above, the variance is under the sampling distribution of the data, given the true parameter.)
-
-There are obviously many potential strategies that might work, but here's one you might find fruitful: try a first-order Taylor approximation of $f(\thetahat)$ around the unknown true value $\theta$.  Try to bound the size of the likely error of the approximation, or at least talk generally about what kinds of assumptions or features of $f$ or $p(\thetahat \mid \theta)$ might be relevant.  You should also reflect on some of the potential caveats of this approach.
-\end{enumerate}
-
-\subsection{Bootstrapping}
-
-The basic idea is to simulate the process of repeated sampling from the population by re-sampling from your sample (with replacement).  The ties and duplicates in your ``bootstrapped samples'' will mimic the sampling variability of the true data-generating process.\footnote{If you're unfamiliar with the idea of the bootstrap, consult he review paper by Efron and Gong entitled ``A Leisurely Look at the Bootstrap, the Jackknife, and Cross-Validation.''  }
-
-\begin{enumerate}[(A)]
-\item Let $\hat{\Sigma}$ denote the covariate matrix of the sampling distribution of $\hat{\beta}$, the least-squares estimator.  Write an R function that will estimate $\hat{\Sigma}$ via bootstrapped resampling for a given design matrix $X$ and response vector $y$.  Use it to compute $\hat{\Sigma}$ for the ozone data set, and compare it to the parametric estimate based on normal theory.
-\item Now let's a few of these ideas.  Write R functions that will accomplish the following:
-\begin{compactenum}[1.]
-\item For a specified mean vector $\mu$ and covariance matrix $\Sigma$, simulate multivariate normal random variables.
-\item For a given sample $x_1, \ldots, x_N$ from a multivariate normal distribution, estimate the mean vector and covariance matrix by maximum likelihood.\footnote{Remember to work on a log scale.  R has many possibilities for optimization; the built-in function optim usually works for me.}
-\item Bootstrap a given sample $x_1, \ldots, x_N$ to estimate the sampling distribution of the MLE.
-\end{compactenum}
-Try out your code in $d=2$ dimensions for a few different sample sizes $N$.  See how well you can recover the true covariance matrix from simulated data.
-\end{enumerate}
-
 
 
 
