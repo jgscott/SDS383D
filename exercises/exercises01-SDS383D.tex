@@ -190,11 +190,31 @@ Here $p_i(y_i \mid \sigma^2)$ is the conditional probability density function of
 
 \item As mentioned above, the estimator in the previous part corresponds to the assumption that $y \sim N(X \beta, \sigma^2 I)$.  What happens if we instead postulate that $y \sim N(X \beta, \Sigma)$, where $\Sigma$ is an arbitrary known covariance matrix, not necessarily proportional to the identity?  What is the maximum likelihood estimate for $\beta$ now, and what is the variance of this estimator?   
 
-\item Show that in the special case where $\Sigma$ is a diagonal matrix, i.e. $\Sigma = \mbox{diag}(\sigma_1^2, \sigma_2^2, \ldots, \sigma_n^2)$, that the MLE is the familiar \emph{weighted least squares} estimator.  
-
+\item Show that in the special case where $\Sigma$ is a diagonal matrix, i.e. $\Sigma = \mbox{diag}(\sigma_1^2, \sigma_2^2, \ldots, \sigma_n^2)$, that the MLE is the familiar \emph{weighted least squares} estimator.  That is, show that $\hat \beta$ is the solution to the following linear system of $P$ equations in $P$ unknowns:
+$$
+(X^T W X) \hat \beta = X^T W y \, ,
+$$
+where $W$ is a diagonal matrix of weights that you should relate to the $\sigma_i^2$'s.  
 
 \end{enumerate}
 
+\section{Some practical details}
+
+\begin{enumerate}[(A)]
+
+\item Let's continue with the weighted least-squares estimator you just characterized, i.e.~the solution to the linear system
+$$
+(X^T W X) \hat \beta = X^T W y \, ,
+$$
+One way to calculate $\hat{\beta}$ is to: (1) recognize that, trivially, the solution to the above linear system must satisfy $\hat \beta = (X^T W X)^{-1} X^T W y$; and (2) to calculate this directly, i.e.~by inverting $X^T W X$.  Let's call this the ``inversion method'' for calculating the WLS solution.
+
+Numerically speaking, is the inversion method the fastest and most stable way to actually solve the above linear system?  Do some independent sleuthing on this question.\footnote{\url{https://www.google.com/search?q=Why+Shouldn\%27t+I+Invert+That+Matrix}}.   Summarize what you find, and provide pseudo-code for at least one alternate method based on matrix factorizations---call it ``your method'' for short.\footnote{Our linear system is not a special flower; whatever you discover about general linear systems should apply here.}
+
+\item Code up functions that implement both the inversion method and your method for an arbitrary $X$, $y$, and set of weights $W$.  Obviously you shouldn't write your own linear algebra routines for doing things like multiplying or decomposing matrices.  But don't use a direct model-fitting function like R's ``lm'' either.   Your actual code should look a lot like the pseudo-code you wrote for the previous part.\footnote{Be attentive to how you multiply a matrix by a diagonal matrix, or you'll waste a lot of time multiplying stuff by zero.}
+
+Now simulate some silly data from the linear model for a range of values of $N$ and $P$.  (Feel free to assume that the weights $w_i$ are all 1.)  It doesn't matter how you do this---e.g.~everything can be Gaussian if you want.  (We're not concerned with statistical principles in this problem, just with algorithms, and using least squares is a pretty terrible idea for enormous linear models, anyway.)  Just make sure that you explore values of $P$ up into the thousands, and that $N > P$.  Benchmark the performance of the inversion solver and your solver across a range of scenarios.\footnote{In R, a simple library for this purpose is microbenchmark.}
+
+\end{enumerate}
 
 
 \end{document}

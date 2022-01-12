@@ -1,0 +1,197 @@
+  \documentclass{mynotes}
+
+%\geometry{showframe}% for debugging purposes -- displays the margins
+
+\newcommand{\E}{\mbox{E}}
+
+\usepackage{amsmath}
+%\usepackage[garamond]{mathdesign}
+\usepackage{url}
+
+% Set up the images/graphics package
+\usepackage{graphicx}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+\graphicspath{{graphics/}}
+
+\title[Lesson 1 $\cdot$ SDS 383D]{Exercises 2: Generalized linear models}
+%\author[ ]{ }
+\date{}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Provides paragraphs of dummy text
+\usepackage{lipsum}
+
+% These commands are used to pretty-print LaTeX commands
+\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\newcommand{\N}{\mbox{N}}
+\newcommand{\thetahat}{\hat{\theta}}
+\newcommand{\sigmahat}{\hat{\sigma}}
+\newcommand{\betahat}{\hat{\beta}}
+
+
+\begin{document}
+
+\maketitle% this prints the handout title, author, and date
+
+\section{Exponential families}
+
+We say that a distribution $f(y \mid \theta, \phi)$ is in an exponential family if we can write its PDF or PMF in the form
+$$
+f(y; \theta, \phi) = \exp \left\{ \frac{y \theta - b(\theta)}{a(\phi)} + c(y; \phi)   \right \}
+$$
+for some known functions $a$, $b$ and $c$.  We refer to $\theta$ as the canonical parameter of the family, and to $\phi$ as the dispersion parameter.  
+
+\begin{enumerate}[(A)]
+
+\item Starting from the ``standard'' form of each PDF/PMF, show that the following distributions are in an exponential family, and find the corresponding $b$, $c$, $\theta$, and $a(\phi)$.  
+
+\begin{itemize}
+\item $Y \sim N(\mu, \sigma^2)$ for known $\sigma^2$.  
+\item $Y = Z/N$ where $Z \sim \mbox{Binom}(N, P)$ for known $N$.   
+\item $Y \sim \mbox{Poisson}(\lambda)$  
+\end{itemize}
+
+\item We want to characterize the mean and variance of an exponential family, but to do this simply, we need a preliminary lemma (that holds for all distributions, not just the exponential family).  Define the \emph{score} $s(\theta)$ as the gradient of the log likelihood:
+$$
+s(\theta) = \frac{\partial}{\partial \theta} \log L(\theta) \, , \quad L(\theta) = \sum_{i=1}^n f(y_i; \theta) \, ;
+$$
+we've written this in multivariate form for the sake of generality, but of course it just involves an ordinary partial derivative (w.r.t.~$\theta$) in case where $\theta$ is one-dimensional.  Let's also define $H(\theta)$ as the Hessian matrix, i.e.~the matrix of second partial derivatives of the log likelihood:
+$$
+H(\theta) = \frac{\partial}{\partial \theta^T} s(\theta) =   \frac{\partial^2}{ \partial \theta \partial \theta^T} \log L(\theta)
+$$
+
+While we think of the score as a function of $\theta$, clearly (like the likelihood) it also depends on the data.  So a natural question is: what can we say about the \emph{distribution} of the score over different random realizations of the data under the true data-generating process, i.e.~at the true $\theta$?  It turns out we can say the following, sometimes referred to as the score equations:  
+$$
+\begin{aligned}
+E\{ s(\theta) \} &= 0 \\
+\mbox{var} \{ s(\theta) \} &= - E \left\{ H(\theta) \right\}
+\end{aligned}
+$$
+where the mean and variance are taken under the true $\theta$.  \textbf{Prove the score equations.}  Hints: prove the first equation first.  You can assume that it's OK to switch the order of differentiation and integration (i.e.~that any necessary technical conditions are met).  To prove the second equation, differentiate both sides of the first equation with respect to $\theta^T$ and switch the order of differentiation and integration again.  Expand out and simplify.  
+
+\item Use the score equations you just proved to show that, if $Y \sim f(y; \theta, \phi)$ is in an exponential family, then
+$$
+\begin{aligned}
+E\{ Y \} &=  b'(\theta) \\
+\mbox{var} \{ Y \} &= a(\phi) b''(\theta) 
+\end{aligned}
+$$
+
+Thus the variance of $Y$ is a product of two terms.  One of these terms, $b''(\theta)$, depends only on the canonical parameter $\theta$, and hence on the mean, since you showed that $E\{ Y \} =  b'(\theta)$.  The other, $a(\phi)$, is independent of $\theta$.  Note that the most common form of $a$ is $a(\phi) = \phi/w$, where $\phi$ is called a dispersion parameter and where $w$ is a known prior weight that can vary from one observation to another.  
+
+\item To convince yourself that your result in $(C)$ is correct, use these results to compute the mean and variance of the $N(\mu, \sigma^2)$ distribution.  
+
+\end{enumerate}
+
+
+\section{Generalized linear models}  
+
+Suppose we observe data like in the typical regression setting: that is, pairs $\{y_i, x_i\}$ where $y_i$ is a scalar response for case $i$, and $x_i$ is a $p$-vector of predictors or features for that same case $i$.  We say that the $y_i$'s follow a \textit{generalized linear model} (GLM) if two conditions are met.  First, the PDF (or PMF, if discrete) can be written as:  
+$$
+f(y_i; \theta_i,  \phi)  = \exp \left\{ \frac{y_i \theta_i - b(\theta_)}{\phi/w_i} + c(y_i; \phi/w_i)   \right \}
+$$
+where the weights $w_i$ are all known.  This is referred to as a the stochastic or random component of the model.  Second, for some known invertible function $g$ we have
+$$
+g(\mu_i) = x_i^T \beta
+$$
+where $\mu_i = E(Y_i; \theta_i, \phi)$.  This is the systematic component of the model, and $g$ is referred to as a link function, since it links the mean of the response $\mu_i$ with the \emph{linear predictor} $\eta_i = x_i^T \beta$.  
+
+
+\begin{enumerate}[(A)]
+
+\item Deduce from your results above that, in a GLM,
+ $$
+\begin{aligned}
+\theta_i &= (b')^{-1} \left\{g^{-1}(x_i^T \beta) \right\} \\
+\mbox{var} \{ Y_i \} &= \frac{\phi}{w_i} V(\mu_i)
+\end{aligned}
+$$
+for some function $V$ that you should specify in terms of the building blocks of the exponential family model.  $V$ is often referred to as a the \emph{variance function}, since it explicitly relates the mean and the variance in a GLM.  
+
+\item Take two special cases.  
+\begin{enumerate}[(1)]
+\item Suppose that $Y$ is a Poisson GLM, i.e. that the stochastic component of the model is a Poisson distribution.  Show that $V(\mu) = \mu$.
+\item Suppose that $Y = Z/N$ is a Binomial GLM, i.e. that the stochastic component of the model is a Binomial distribution $Z \sim \mbox{Binom}(N, P)$.  Show that $V(\mu) = \mu(1-\mu)$.  
+\end{enumerate}
+
+\item To specify a GLM we must choose the link function $g(\mu_i)$.  Recall that $g$ links the predictors with the mean of the response: $g(\mu_i) = x_i^T \beta$.  Since you've shown that
+$$
+\theta_i = (b')^{-1} \left\{g^{-1}(x_i^T \beta) \right\}
+$$
+a particular simple choice of link function is one where $g^{-1} = b'$, or equivalently $g(\mu) = (b')^{-1}(\mu)$.  This is known as the \textit{canonical link}, in which case the canonical parameter simplifies to
+$$
+\theta_i = (b')^{-1} \left\{b'(x_i^T \beta) \right\} = x_i^T \beta \, .
+$$
+So under the canonical link $g(\mu) = b'^{-1}(\mu)$, we have the model
+$$
+f(y_i; \beta, \phi) \exp \left\{ \frac{y_i x_i^T \beta - b(x_i^T \beta)}{\phi/w_i} + c(y_i; \phi/w_i)   \right \}
+$$
+
+Now return to the two special cases from the previous problem.
+\begin{enumerate}[(1)]
+\item Suppose that $Y$ is a Poisson GLM, i.e. that the stochastic component of the model is a Poisson distribution. Show that the canonical link is $g(\mu) = \log \mu$.  
+\item Suppose that $Y = Z/N$ is a Binomial GLM, i.e. that the stochastic component of the model is a Binomial distribution $Z \sim \mbox{Binom}(N, P)$.   Show that the canonical link is $g(\mu) = \log \left\{ \mu/(1-\mu) \right\}$.  
+\end{enumerate}
+
+\end{enumerate}
+
+
+%
+%\section{Fitting GLMs}
+%
+% The regression coefficients $\beta$ in a GLM are typically fit using some variation on likelihood-based inference.  To this end, define the likelihood function for a given GLM as
+%$$
+%L(\beta, \phi) = \prod_{i=1}^n \exp \left\{ \frac{y_i \theta_i - b(\theta_i)}{\phi/w_i} + c(y_i; \phi/w_i)   \right \} \, ,
+%$$
+%where based on results you proved above, we define $\theta_i = (b')^{-1}(\mu_i)$ and $\mu_i = g^{-1}(x_i^T \beta)$.  
+%
+%This allows us to define the score function $s(\beta, \phi)$ as the gradient of the log likelihood with respect to $\beta$:
+%$$
+%s(\beta, \phi) = \nabla_\beta \  \log L(\beta, \phi) = \frac{\partial}{\partial \beta} \log L(\beta, \phi) \, .
+%$$
+%Similarly, define the Hessian matrix as the matrix of partial second derivatives of the log likelihood:  
+%$$
+%H(\beta, \phi) = \frac{\partial^2}{\partial \beta \partial \beta^T} \log L(\beta, \phi) 
+%$$
+%
+%
+%\begin{enumerate}[(A)]
+%
+%\item Using the chain rule
+%$$
+%\frac{\partial}{\partial \beta} = \frac{\partial}{\partial \theta} \times \frac{\partial \theta}{\partial \mu } \times \frac{\partial \mu}{\partial \beta} \, ,
+%$$
+%show that 
+%
+%\item Show that under the canonical link, $g'(\mu) = 1/V(\mu)$.  Hint: remember from calculus that
+%$$
+%(f^{-1})'(x) = 
+%$$
+%
+%\end{enumerate}
+%
+
+\end{document}
+
