@@ -28,6 +28,17 @@ Expected timeline:
 - By Feb 16: Fitting GLMs, A through C  
 - By Feb 21: Fitting GLMs, D through G  
 
+## Exercises 3: Bayes and the Gaussian linear model  
+
+The goals of [Exercises 3](exercises03-SDS383D.pdf) are: 
+- to introduce the normal/inverse-gamma conjugate prior for a location-scale model.    
+- to construct and fit a simple Bayesian linear model from scratch, based on normal/inverse-gamma conjugacy.  
+- to introduce hierarchical modeling, in the form of a regression model with heteroskedastic error.  
+
+Expected timeline TBA, but as a starting point:  
+- By Feb 23: aim to finish the section on "A simple Gaussian location model"  
+
+
 <!-- 
 ## Exercises 2: Bayes and the Gaussian linear model  
 

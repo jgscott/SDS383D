@@ -6,7 +6,7 @@ Some course logistics
 - Instructor: James Scott, <http://jgscott.github.com>  
 - Meets: Mondays and Wednesday, 1:00 to 2:30 PM
 - Classroom: UTC 4.120
-- Office hours: TBA
+- Office hours: Tuesday, 1-2 PM, via Zoom (link on Canvas).  Wednesdays in person, 2:30-3:30 PM, CBA 6.478.    
 
 ## Exercises 
 
