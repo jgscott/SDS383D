@@ -57,6 +57,10 @@ Expected timeline:
 
 
 
+## Exercises 5: Hierarchical linear models
+
+The goals of [Exercises 5](exercises05-SDS383D.pdf) are to practice fitting hierarchical regression models with a simple two-level grouping structure.  
+
 
 <!-- 
 ## Exercises 2: Bayes and the Gaussian linear model  
