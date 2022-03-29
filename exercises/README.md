@@ -69,8 +69,7 @@ The goal of [Exercises 6](exercises06-SDS383D.pdf) is to equip you with some sim
 In the interests of pacing, you are not required to complete the "basic concepts" section at the beginning.  If there's time, I will present this material in class.  
 
 Expected timeline:  
-- By April 4: Curve fitting by linear smoothing  
-- By April 6: Cross validation  
+- By April 6: Curve fitting by linear smoothing, cross validation.  Note that to keep the workload from getting unreasonable, I've made the proof of the "leave one out lemma" optional.  
 - By April 11: Local polynomical regression, A-D  
 - By April 13: Local polynomical regression, E-G   
 - By April 18: Gaussian processes, In nonparametric regression and spatial smoothing A-C  
