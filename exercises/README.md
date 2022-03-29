@@ -64,7 +64,7 @@ The goals of [Exercises 5](exercises05-SDS383D.pdf) are to practice fitting hier
 
 ## Exercises 6: Linear smoothing and Gaussian processes  
 
-The goal of [Exercises 6](exercises03-SDS383D.pdf) is to equip you with some simple building blocks for nonlinear curve fitting and smoothing.  Yes, it turns out that "linear smoothing" is used for nonlinear curve fitting.  This sounds like a contradiction, but you'll see what it entails and why it makes sense.  Here both Bayesian and frequentist approaches feature equally.  Linear smoothers lead us to Gaussian processes, a natural Bayesian model for a random function or spatial process.
+The goal of [Exercises 6](exercises06-SDS383D.pdf) is to equip you with some simple building blocks for nonlinear curve fitting and smoothing.  Yes, it turns out that "linear smoothing" is used for nonlinear curve fitting.  This sounds like a contradiction, but you'll see what it entails and why it makes sense.  Here both Bayesian and frequentist approaches feature equally.  Linear smoothers lead us to Gaussian processes, a natural class of Bayesian models for a random function or spatial process.
 
 In the interests of pacing, you are not required to complete the "basic concepts" section at the beginning.  If there's time, I will present this material in class.  
 
