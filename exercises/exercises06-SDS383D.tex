@@ -19,7 +19,7 @@
 \setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
 \graphicspath{{graphics/}}
 
-\title[Exercises 3 $\cdot$ SDS 383D]{Exercises 3: Linear smoothing and Gaussian processes}
+\title[Exercises 3 $\cdot$ SDS 383D]{Exercises 6: Linear smoothing and Gaussian processes}
 %\author[ ]{ }
 \date{}  % if the \date{} command is left out, the current date will be used
 
@@ -171,7 +171,7 @@ w(x_i, x^{\star}) = \frac{1}{h} K \left( \frac{x_i - x^{\star}}{h} \right)  \, ,
 $$
 where $h$ is the bandwidth.    Using this weighting function in a linear smoother is called \textit{kernel regression}.  (The weighting function gives the unnormalized weights; you should normalize the weights so that they sum to 1.)
 
-Write your own R function that will fit a kernel smoother for an arbitrary set of $x$-$y$ pairs, and arbitrary choice of (positive real) bandwidth $h$.\footnote{Coding tip: write things in a modular way.  A kernel function is a function accepting a distance and a bandwidth and returning a nonnegative real.  A weighting function is a function that accepts a vector of previous $x$'s, a new x, and a kernel function; and that returns a vector of weights.  Et cetera.  You will appreciate your foresight in writing modular code later in the course!}  Set up an R script that will simulate noisy data from some nonlinear function, $y = f(x) + \epsilon$; subtract the sample means from the simulated $x$ and $y$; and use your function to fit the kernel smoother for some choice of $h$.  Plot the estimated functions for a range of bandwidths large enough to yield noticeable changes in the qualitative behavior of the prediction functions.
+Write your own R function that will fit a kernel smoother for an arbitrary set of $x$-$y$ pairs and arbitrary choice of (positive real) bandwidth $h$.\footnote{Coding tip: write things in a modular way.  A kernel function is a function accepting a distance and a bandwidth and returning a nonnegative real.  A weighting function is a function that accepts a vector of previous $x$'s, a new x, and a kernel function; and that returns a vector of weights.  Et cetera.  It's much, much easier to debug modular code.}  You choose the kernel.  Set up an R script that will simulate noisy data from some nonlinear function, $y = f(x) + \epsilon$; subtract the sample means from the simulated $x$ and $y$; and use your function to fit the kernel smoother for some choice of $h$. Plot the estimated functions for a range of bandwidths wide enough to yield noticeable differences in the qualitative behavior of the prediction functions.
 
 \end{enumerate}
 
@@ -190,16 +190,31 @@ L_n(\hat{f}) = \frac{1}{n}\sum_{i=1}^{n^{\star}} (y^{\star}_i - \hat{y}_i^{\star
 $$
 where $(y_i^{\star}, x_i^{\star})$ are the points in the test set, and $ \hat{y}_i^{\star}$ is your predicted value arising from the model you fit using only the training data.  Does your out-of-sample predictive validation method lead to reasonable choices of $h$ for each case?
 
-\item (optional problem) Splitting a data set into two chunks to choose $h$ by out-of-sample validation has some drawbacks.  List at least two.  Then consider an alternative: leave-one-out cross validation.  Define
+\item (optional problem,``leave-one-out lemma.'') Splitting a data set into two chunks to choose $h$ by out-of-sample validation has some drawbacks.  (See if you can think of two; one is obvious, one is more subtle.)  Then consider an alternative: leave-one-out cross validation.  Define
 $$
 \mbox{LOOCV} = \sum_{i=1}^n \left( y_i - \hat{y}_{i}^{(-i)} \right)^2 \, ,
 $$
-where $\hat{y}_{i}^{(-i)} $ is the predicted value of $y_i$ obtained by omitting the $i$th pair and fitting the model to the reduced data set.\footnote{The intuition here is straightforward: for each possible choice of $h$, you have to predict each data point using all the others.  The bandwidth that with the lowest prediction error is the ``best'' choice by the LOOCV criterion.}  This is contingent upon a particular bandwidth, and is obviously a function of $x_i$, but these dependencies are suppressed for notational ease.  This looks expensive to compute: for each value of $h$, and for each data point to be held out, fit a whole nonlinear regression model.  But you will derive a shortcut!
+where $\hat{y}_{i}^{(-i)} $ is the predicted value of $y_i$ obtained by omitting the $i$th pair $(x_i, y_i)$ and fitting the model to the training data set of size $N-1$.\footnote{The intuition here is straightforward: for each possible choice of $h$, you have to predict each data point using all the others.  The bandwidth that with the lowest prediction error is the ``best'' choice by the LOOCV criterion.}  This $\hat{y}_{i}^{(-i)}$ is contingent upon a particular bandwidth, and is obviously a function of $x_i$, but these dependencies are suppressed for notational ease.  This error metric looks expensive to compute: for each value of $h$, and for each data point to be held out, it seems as though you must fit a whole nonlinear regression model.  But happily, there's a short-cut!
 
-Observe that for a linear smoother, we can write the whole vector of fitted values as $\hat{y} = H y$, where $H$ is called the smoothing matrix (or ``hat matrix'') and $y$ is the vector of observed outcomes.\footnote{Remember that in multiple linear regression this is also true: $$\hat{y} = X \hat{\beta} = X (X^T X)^{-1} X^T y = Hy \, .$$}  Write $\hat{y}_i$ in terms of $H$ and $y$, and show that $\hat{y}_i^{(-i)} = \hat{y}_i - H_{ii} y_i + H_{ii} \hat{y}_i^{(-i)}$.  Deduce that, for a linear smoother,
+Observe that for a linear smoother, we can write the whole vector of fitted values as $\hat{y} = H y$, where $H$ is called the smoothing matrix (or ``hat matrix'') and $y$ is the vector of observed outcomes.\footnote{Remember that in linear regression fit by OLS, this is also true: $$\hat{y} = X \hat{\beta} = X (X^T X)^{-1} X^T y = Hy \, .$$}   Deduce that, for any linear smoother,
 $$
 \mbox{LOOCV} = \sum_{i=1}^n \left( \frac{  y_i - \hat{y}_{i} } {1-H_{ii}} \right)^2 \, .
 $$
+
+Hint: observe that for any matrix A whose rows\footnote{Remember that by default all vectors are column vectors. So when we write $a_i$, we mean the $i$th row of $A$ \emph{considered as a column vector}.  So as a row vector, it's $a_i^t$.} are $a_i^t, i = 1, \ldots n$, we have
+$$
+A^t A = \sum_{i=1}^n a_i a_i^t
+$$
+Therefore, if we let $X_{(-i)}$ be the original feature matrix with the $i$th row $x_i^t$ removed, we have
+$$
+X_{(-i)}^t X_{(-i)} = \sum_{l \neq i} x_i x_i^t = \sum_{l=1}^n x_l x_l^t  - x_i x_i^t = X'X - x_i x_i^t
+$$
+ This hint is useful because computing $\hat{y}_{i}^{(-i)}$ requires inverting $X_{(-i)}^t X_{(-i)}$.  This result, combined with the Sherman-Morrison formula, provides a path to do so, and ultimately to prove the leave-one-out lemma.  
+
+Like I said, proving this lemma is optional. I will prove it in class, but consider it a nice linear algebra exercise to try to prove it yourself.  However, you should use it for the following part...
+
+\item Use the leave-one-out lemma to revisit the examples you simulated in Part B, using leave-one-out cross validation to select $h$ in each case.  Because of the leave-one-out lemma, you won't need to actually refit the model N times!  
+
 
 
 \end{enumerate}
@@ -254,9 +269,9 @@ $$
 $$
 and simplify things as much as possible.  Roughly under what circumstances will this estimator be nearly unbiased for large $n$?  Note: the quantity $2\mbox{tr}(H) - \mbox{tr}(H^T H)$ is often referred to as the ``effective degrees of freedom'' in such problems.
 
-\item Write a new R function that fits the local linear estimator using a Gaussian kernel for a specified choice of bandwidth $h$. Then load the data in ``utilities.csv'' into R.\footnote{On the class GitHub site.}  This data set shows the monthly gas bill (in dollars) for a single-family home in Minnesota, along with the average temperature in that month (in degrees F), and the number of billing days in that month.  Let $y$ be the average daily gas bill in a given month (i.e.~dollars divided by billing days), and let $x$ be the average temperature.  Fit $y$ versus $x$ using local linear regression and some choice of kernel.  Choose a bandwidth by leave-one-out cross-validation.
+\item Write code that fits the local linear estimator using a Gaussian kernel for a specified choice of bandwidth $h$. Then load the data in ``utilities.csv'' into R.\footnote{On the class GitHub site.}  This data set shows the monthly gas bill (in dollars) for a single-family home in Minnesota, along with the average temperature in that month (in degrees F), and the number of billing days in that month.  Let $y$ be the average daily gas bill in a given month (i.e.~dollars divided by billing days), and let $x$ be the average temperature.  Fit $y$ versus $x$ using local linear regression and some choice of kernel.  Choose a bandwidth by leave-one-out cross-validation.
 
-\item Inspect the residuals from the model you just fit.  Does the assumption of constant variance (homoscedasticity) look reasonable?  If not, do you have any suggestion for fixing it?
+\item Inspect the residuals from the model you just fit.  Does the assumption of constant variance (homoskedasticity) look reasonable?  If not, do you have any suggestion for fixing it?
 
 \item Put everything together to construct an approximate point-wise 95\% confidence interval for the local linear model (using your chosen bandwidth) for the value of the function at each of the observed points $x_i$ for the utilities data.  Plot these confidence bands, along with the estimated function, on top of a scatter plot of the data.\footnote{It's fine to use Gaussian critical values for your confidence set.}
 
@@ -274,13 +289,13 @@ $$
 for all $x_1, x_2 \in \mathcal{X}$.  More generally, the random vector $[f(x_1), \ldots, f(x_N)]^T$ has covariance matrix whose $(i,j)$ element is $C(x_i, x_j)$.  Typical covariance functions are those that decay as a function of increasing distance between points $x_1$ and $x_2$.  The notion is that $f(x_1)$ and $f(x_2)$ will have high covariance when $x_1$ and $x_2$ are close to each other.
 
 \begin{enumerate}[(A)]
-\item   Read up on the \href{https://en.wikipedia.org/wiki/Matérn_covariance_function}{Matern class}\footnote{\url{https://en.wikipedia.org/wiki/Matérn_covariance_function}} of covariance functions.  The Matern class has the \textit{squared exponential} covariance function as a special case:
+\item   Read up on the \href{https://en.wikipedia.org/wiki/Matérn_covariance_function}{Matern class}\footnote{\url{https://en.wikipedia.org/wiki/Matern_covariance_function}} of covariance functions.  The Matern class has the \textit{squared exponential} covariance function as a special case:
 $$
 C_{SE}(x_1, x_2) = \tau_1^2 \exp \left\{ - \frac{1}{2} \left( \frac{d(x_1, x_2)}{b} \right)^2 \right\} + \tau^2_2 \delta(x_1, x_2) \, ,
 $$
 where $d(x_1, x_2) = \Vert x_1 - x_2 \Vert_2$ is Euclidean distance (or just $|x-y|$ for scalars).  The constants $(b, \tau^2_1, \tau^2_2)$ are often called \textit{hyperparameters}, and $\delta(a,b)$ is the Kronecker delta function that takes the value 1 if $a=b$, and 0 otherwise.  But usually this covariance function generates functions that are ``too smooth,'' and so we use other covariance functions in the Matern class as a default.\footnote{See the speed comparison in kernel-benchmark.R on the class GitHub site if you want to see how Rcpp can be used to speed things up here.  My code is for the squared-exponential covariance function.}
 
-Let's start with the simple case where $\mathcal{X} = [0,1]$, the unit interval.  Write a function that simulates a mean-zero Gaussian process on $[0,1]$ under the Matern(5/2) covariance function.  The function will accept as arguments: (1) finite set of points $x_1, \ldots, x_N$ on the unit interval; and (2) a triplet $(b, \tau^2_1, \tau^2_2)$. It will return the value of the random process at each point: $f(x_1), \ldots, f(x_N)$.
+Let's start with the simple case where $\mathcal{X} = [0,1]$, the unit interval.  Write a function that simulates a mean-zero Gaussian process on $[0,1]$ under the squared exponential covariance function.  The function will accept as arguments: (1) finite set of points $x_1, \ldots, x_N$ on the unit interval; and (2) a triplet $(b, \tau^2_1, \tau^2_2)$. It will return the value of the random process at each point: $f(x_1), \ldots, f(x_N)$.
 
 Use your function to simulate (and plot) Gaussian processes across a range of values for $b$, $\tau^2_1$, and $\tau^2_2$.  Try starting with a very small value of $\tau^2_2$ (say, $10^{-6}$) and playing around with the other two first.  On the basis of your experiments, describe the role of these three hyperparameters in controlling the overall behavior of the random functions that result.  What happens when you try $\tau^2_2 = 0$? Why?  If you can fix this, do---remember our earlier discussion on different ways to simulate the MVN.
 
@@ -288,7 +303,7 @@ Now simulating a few functions with a different covariance function, the Mat\'er
 $$
 C_{M52}(x_1, x_2) = \tau_1^2 \left\{ 1 + \frac{\sqrt{5}d}{b} + \frac{5d^2}{3b^2} \right\} \exp\left( \frac{-\sqrt{5}d}{b} \right) + \tau^2_2 \delta(x_1, x_2) \, ,
 $$
-where $d = \Vert x_1 - x_2 \Vert_2$ is the distance between the two points $x_1$ and $x_2$.  Comment on the differences between the functions generated from the two covariance kernels.\footnote{The Mat\'ern covariance is actually a whole family of functions: \url{http://en.wikipedia.org/wiki/Matérn_covariance_function}.}
+where $d = \Vert x_1 - x_2 \Vert_2$ is the distance between the two points $x_1$ and $x_2$.  Comment on the differences between the functions generated from the two covariance kernels.
 
 \item Suppose you observe the value of a Gaussian process $f \sim \mbox{GP}(m,C)$ at points $x_1, \ldots, x_N$.  What is the conditional distribution of the value of the process at some new point $x^{\star}$?  For the sake of notational ease simply write the value of the $(i,j)$ element of the covariance matrix as $C_{i,j}$, rather than expanding it in terms of a specific covariance function.
 
